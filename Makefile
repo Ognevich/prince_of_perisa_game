@@ -4,7 +4,7 @@ CFLAGS = -I src/include -Wall -g
 
 LDFLAGS = -L src/lib -lSDL3
 
-SRC = main.c core/gameControler.c game/game.c graphics/renderer.c input/input.c platform/sdl.c  
+SRC = main.c game/game.c game/player/player.c graphics/renderer.c input/input.c platform/sdl.c  
 TARGET = main.exe   
 
 all: $(TARGET)

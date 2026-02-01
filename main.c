@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <SDL3/SDL_main.h>
-#include "core/gameControler.h"
+#include "game/game.h"
 #include "platform/sdl.h"
 
 int main(int argc, char* argv[])
@@ -11,25 +11,7 @@ int main(int argc, char* argv[])
     if(!sdl_init(&context,&config))
         return 1;
 
-    while (config.state != GAME_STOP)
-    {
-        SDL_Event event;
-
-        while(SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_EVENT_QUIT)
-            {
-                config.state = GAME_STOP;   
-            }
-
-        }
-
-        SDL_Rect rect = {0,0,100,50};
-
-        SDL_SetRenderDrawColor(context.renderer, 4,5,6,6);
-        SDL_RenderFillRect(context.renderer, &rect);
-
-    }
+    update_game(&config, &context);
 
     sdl_shutdown(&context);
 

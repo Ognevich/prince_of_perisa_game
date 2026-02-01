@@ -8,12 +8,13 @@ int sdl_init(SDLContext * context, GameConfig * cfg)
         SDL_Quit();
         return 0;
     }
-
-    context->renderer = SDL_CreateRenderer(context->window, -1);
+    
+    context->renderer = SDL_CreateRenderer(context->window, NULL);
     if (!context->renderer){
         SDL_DestroyWindow(context->window);
         return 0;
     }
+    SDL_SetRenderDrawBlendMode(context->renderer, SDL_BLENDMODE_BLEND);
 
     return 1;
 }
