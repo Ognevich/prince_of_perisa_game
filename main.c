@@ -21,7 +21,13 @@ int main(int argc, char* argv[])
             {
                 config.state = GAME_STOP;   
             }
+
         }
+
+        SDL_Rect rect = {0,0,100,50};
+
+        SDL_SetRenderDrawColor(context.renderer, 4,5,6,6);
+        SDL_RenderFillRect(context.renderer, &rect);
 
     }
 
