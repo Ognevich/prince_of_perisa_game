@@ -3,6 +3,7 @@
 #include "config.h"
 
 typedef struct SDLContext SDLContext;
+typedef struct Player Player;
 
 typedef enum{
     GAME_START,
@@ -17,7 +18,14 @@ typedef struct{
     char title[TITLE_SIZE];
 }GameConfig;
 
-void init_game(GameConfig * config);
-void update_game(GameConfig * config, SDLContext * context);
+typedef struct{
+    Player * player;
+}GameObjects;
+
+void init_game(GameConfig * config,GameObjects * objects);
+void init_game_config(GameConfig * config);
+void init_game_objects(GameObjects * objects, GameConfig * config);
+
+void update_game(GameConfig * config, SDLContext * context, GameObjects * objects);
 
 #endif

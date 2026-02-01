@@ -7,11 +7,13 @@ int main(int argc, char* argv[])
 {
     SDLContext context;
     GameConfig config; 
-    init_game(&config); 
+    GameObjects objects;
+
+    init_game(&config, &objects); 
     if(!sdl_init(&context,&config))
         return 1;
 
-    update_game(&config, &context);
+    update_game(&config, &context, &objects);
 
     sdl_shutdown(&context);
 

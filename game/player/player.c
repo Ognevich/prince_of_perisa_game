@@ -21,9 +21,14 @@ void free_player(Player * player)
     free(player);
 }
 
-void draw_player(SDLContext * context, Player * player)
+void draw_player(SDLContext * context, Player * plr)
 {
-    SDL_SetRenderDrawColor(context->renderer, 255, 0, 0, 255);
-    SDL_FRect rect = {20.0f, 20.0f, 100.0f, 50.0f};
+    SDL_SetRenderDrawColor(context->renderer, plr->color.r, plr->color.g, plr->color.b, plr->color.a);
+    SDL_FRect rect = {plr->x, plr->y, plr->width, plr->height};
     SDL_RenderFillRect(context->renderer, &rect);
+}
+
+void update_player_pos(SDLContext * context,Player * player)
+{
+    
 }
