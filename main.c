@@ -1,22 +1,15 @@
 #include <stdio.h>
-#include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include "engine/gameControler.h"
+#include "core/gameControler.h"
+#include "platform/sdl.h"
 
 int main(int argc, char* argv[])
 {
-
+    SDLContext context;
     GameConfig config; 
-    initGame(&config);
-
-    SDL_Window * window;
-
-    const char * title = "Prince Of Persia";
-
-    window = SDL_CreateWindow(title,config.WIDTH,config.HEIGHT,SDL_WINDOW_OPENGL);
-
-    if (!window)
-        return 1; 
+    init_game(&config); 
+    if(!sdl_init(&context,&config))
+        return 1;
 
     while (config.state != GAME_STOP)
     {
@@ -32,8 +25,7 @@ int main(int argc, char* argv[])
 
     }
 
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    sdl_shutdown(&context);
 
     return 0;
 }
