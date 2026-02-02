@@ -4,6 +4,7 @@
 
 typedef struct SDLContext SDLContext;
 typedef struct Player Player;
+typedef struct Input_type Input_type;
 
 typedef enum{
     GAME_START,
@@ -27,5 +28,7 @@ void init_game_config(GameConfig * config);
 void init_game_objects(GameObjects * objects, GameConfig * config);
 
 void update_game(GameConfig * config, SDLContext * context, GameObjects * objects);
+
+void game_shutdown(GameObjects * objects);
 
 #endif

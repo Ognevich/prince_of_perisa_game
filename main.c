@@ -16,6 +16,6 @@ int main(int argc, char* argv[])
     update_game(&config, &context, &objects);
 
     sdl_shutdown(&context);
-
+    game_shutdown(&objects);
     return 0;
 }

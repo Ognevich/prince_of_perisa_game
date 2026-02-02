@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "../../graphics/renderer.h"
 #include "../../platform/sdl.h"
+#include "../../input/input.h"
 
 struct Player{
     float x,y;
@@ -15,7 +16,7 @@ Player * create_player(float x, float y, float height, float width, rgba c, floa
 void free_player(Player * player);
 
 void draw_player(SDLContext * context, Player * player);
-void update_player_pos(SDLContext * context,Player * player);
+void update_player(Player * player, Input_type * type, GameConfig * cfg);
 
 
 #endif

@@ -28,7 +28,22 @@ void draw_player(SDLContext * context, Player * plr)
     SDL_RenderFillRect(context->renderer, &rect);
 }
 
-void update_player_pos(SDLContext * context,Player * player)
+
+static void update_player_pos(Player * player, Input_type * type)
 {
-    
+    if (type->left) player->x -= DEFAULT_SPEED;
+    if (type->right) player->x += DEFAULT_SPEED;
+}
+
+static void checkPlayerCollision(Player * p, GameConfig * cfg)
+{
+    if (p->x < 0) p->x = 0;
+    if (p->x + p->width > cfg->WIDTH) p->x = cfg->WIDTH - p->width;
+
+}
+
+void update_player(Player * player, Input_type * type, GameConfig * cfg)
+{
+    update_player_pos(player,type);
+    checkPlayerCollision(player, cfg);
 }

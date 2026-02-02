@@ -1,10 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "game.h"
 #include <string.h>
+#include <stdlib.h>
 #include <SDL3/SDL.h>
 #include "../platform/sdl.h"
 #include "../graphics/renderer.h"
 #include "player/player.h"
+#include "../input/input.h"
 
 void init_game(GameConfig * config, GameObjects * objects)
 {
@@ -34,24 +36,18 @@ void init_game_objects(GameObjects * objects, GameConfig * config)
 void update_game(GameConfig * config, SDLContext * context, GameObjects * objects)
 {
 
+    Input_type input;
+
     while (config->state != GAME_STOP)
     {
-        SDL_Event event;
-
-        while(SDL_PollEvent(&event))
-        {
-            if (event.type == SDL_EVENT_QUIT)
-            {
-                config->state = GAME_STOP;   
-            }
-        }
-        SDL_SetRenderDrawColor(context->renderer, 0, 0, 0, 255);
-        SDL_RenderClear(context->renderer);
-        draw_player(context,objects->player);
-        SDL_RenderPresent(context->renderer);
-
-        SDL_Delay(FRAME_RATE);
+        poll_events(config);
+        proccess_input(&input);
+        update_player(objects->player, &input, config);
+        render(context,objects);
     }
+}
 
-    free_player(objects->player);
+void game_shutdown(GameObjects * objects)
+{
+    free(objects->player);
 }

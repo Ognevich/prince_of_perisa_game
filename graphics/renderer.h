@@ -1,6 +1,8 @@
 #ifndef _RENDERER_H_
 #define _RENDERER_H_
 #include <stdint.h>
+#include "../game/game.h"
+#include "../platform/sdl.h"
 
 typedef struct{
     uint8_t r;
@@ -9,6 +11,6 @@ typedef struct{
     uint8_t a;
 }rgba;
 
-
+void render(SDLContext * context, GameObjects* objects);
 
 #endif
