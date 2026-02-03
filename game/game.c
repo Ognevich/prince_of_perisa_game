@@ -8,10 +8,10 @@
 #include "player/player.h"
 #include "../input/input.h"
 
-void init_game(GameConfig * config, GameObjects * objects)
+void init_game(GameConfig * config,Player * player)
 {
     init_game_config(config);
-    init_game_objects(objects,config);
+    init_player(player, config);
 }
 
 void init_game_config(GameConfig * config)
@@ -22,18 +22,16 @@ void init_game_config(GameConfig * config)
     strcpy(config->title, "Prince of Persia");
 }
 
-void init_game_objects(GameObjects * objects, GameConfig * config)
+void init_player(Player * player, GameConfig * config)
 {
     rgba color = {255,127,0,255};
-    Player* player = create_player(config->WIDTH  / 2.0f,
+    create_player(player, config->WIDTH  / 2.0f,
                                    config->HEIGHT / 2.0f,
                                    50, 45,              
                                    color, 0.0f, 0.0f);
-
-    objects->player = player;
 }
 
-void update_game(GameConfig * config, SDLContext * context, GameObjects * objects)
+void update_game(GameConfig * config, SDLContext * context, Player * player)
 {
 
     Input_type input;
@@ -42,12 +40,12 @@ void update_game(GameConfig * config, SDLContext * context, GameObjects * object
     {
         poll_events(config);
         proccess_input(&input);
-        update_player(objects->player, &input, config);
-        render(context,objects);
+        update_player(player, &input, config);
+        render(context,player);
     }
 }
 
-void game_shutdown(GameObjects * objects)
+void game_shutdown(GameObjects * scene)
 {
-    free(objects->player);
+
 }

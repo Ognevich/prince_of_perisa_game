@@ -12,10 +12,9 @@ struct Player{
     float dx, dy;
 };
 
-Player * create_player(float x, float y, float height, float width, rgba c, float dx, float dy);
+void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);
 void free_player(Player * player);
 
-void draw_player(SDLContext * context, Player * player);
 void update_player(Player * player, Input_type * type, GameConfig * cfg);
 
 

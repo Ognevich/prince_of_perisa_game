@@ -11,6 +11,10 @@ typedef struct{
     uint8_t a;
 }rgba;
 
-void render(SDLContext * context, GameObjects* objects);
+void render(SDLContext * context, Player * player);
+void draw_player(SDLContext * context, Player * player);
+
+void draw_wall();
+
 
 #endif
