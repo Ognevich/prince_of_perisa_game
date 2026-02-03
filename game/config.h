@@ -3,10 +3,12 @@
 
 ////////////BASE SETTINGS////////////
 #define TITLE_SIZE 20
+#define GAME_HEIGHT 576
+#define GAME_WIDTH  1024
 /////////////////////////////////////
 
 ////////////RENDER SETTINGS//////////
-#define FRAME_RATE 16
+#define FRAME_DELAY 1000/60 
 /////////////////////////////////////
 
 /////PLAYER PHYSICS SETTUNGS////////

@@ -10,7 +10,8 @@ SRC = main.c \
       graphics/renderer.c \
       input/input.c \
       platform/sdl.c \
-	  game/static_objects/wall.c
+	  game/static_objects/wall.c \
+	  game/scene/scene.c
 
 TARGET = main.exe   
 

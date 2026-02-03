@@ -12,9 +12,5 @@ typedef struct{
 }rgba;
 
 void render(SDLContext * context, Player * player);
-void draw_player(SDLContext * context, Player * player);
-
-void draw_wall();
-
 
 #endif

@@ -15,7 +15,7 @@ struct Player{
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);
 void free_player(Player * player);
 
-void update_player(Player * player, Input_type * type, GameConfig * cfg);
+void update_player(Player * player, Input_type * type);
 
 
 #endif

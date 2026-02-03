@@ -3,8 +3,10 @@
 #include "static_objects.h"
 
 struct Wall{
-    int x, y;
-    int h, w;
+    int x;
+    int y;
+    int h;
+    int w;
     StaticObjectType type;
 };
 

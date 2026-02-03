@@ -1,5 +1,6 @@
 #include "player.h"
 #include <stdlib.h>
+#include "../config.h"
 
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy)
 {
@@ -24,15 +25,15 @@ static void update_player_pos(Player * player, Input_type * type)
     if (type->right) player->x += DEFAULT_SPEED;
 }
 
-static void checkPlayerCollision(Player * p, GameConfig * cfg)
+static void checkPlayerCollision(Player * p)
 {
     if (p->x < 0) p->x = 0;
-    if (p->x + p->width > cfg->WIDTH) p->x = cfg->WIDTH - p->width;
+    if (p->x + p->width > GAME_WIDTH) p->x = GAME_WIDTH - p->width;
 
 }
 
-void update_player(Player * player, Input_type * type, GameConfig * cfg)
+void update_player(Player * player, Input_type * type)
 {
     update_player_pos(player,type);
-    checkPlayerCollision(player, cfg);
+    checkPlayerCollision(player);
 }

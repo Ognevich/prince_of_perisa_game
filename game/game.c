@@ -11,22 +11,23 @@
 void init_game(GameConfig * config,Player * player)
 {
     init_game_config(config);
-    init_player(player, config);
+    init_player(player);
 }
 
 void init_game_config(GameConfig * config)
 {
     config->state = GAME_START; 
-    config->HEIGHT = 576;
-    config->WIDTH = 1024;
+    config->HEIGHT = GAME_HEIGHT;
+    config->WIDTH = GAME_WIDTH;
+    config->scene_type = SCENE_LEVE1;
     strcpy(config->title, "Prince of Persia");
 }
 
-void init_player(Player * player, GameConfig * config)
+void init_player(Player * player)
 {
     rgba color = {255,127,0,255};
-    create_player(player, config->WIDTH  / 2.0f,
-                                   config->HEIGHT / 2.0f,
+    create_player(player, GAME_WIDTH / 2.0f,
+                                   GAME_HEIGHT / 2.0f,
                                    50, 45,              
                                    color, 0.0f, 0.0f);
 }
@@ -35,17 +36,33 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 {
 
     Input_type input;
+    Uint32 frameStart;
+    int frameTime;
 
     while (config->state != GAME_STOP)
     {
-        poll_events(config);
-        proccess_input(&input);
-        update_player(player, &input, config);
-        render(context,player);
+        switch (config->scene_type)
+        {
+        case SCENE_LEVE1:
+        {
+            frameStart = SDL_GetTicks();
+            poll_events(config);
+            proccess_input(&input);
+            update_player(player, &input);
+            render(context,player);
+
+            frameTime = SDL_GetTicks() - frameStart;
+            if (FRAME_DELAY > frameTime)
+            SDL_Delay(FRAME_DELAY - frameTime);
+            break;
+        }
+        default:
+            break;
+        }
     }
 }
 
-void game_shutdown(GameObjects * scene)
+void game_shutdown()
 {
 
 }
