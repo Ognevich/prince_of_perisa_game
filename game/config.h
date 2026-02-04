@@ -1,5 +1,6 @@
 #ifndef _CONFIG_H_
 #define _CONFIG_H_
+#include <stdint.h>
 
 ////////////BASE SETTINGS////////////
 #define TITLE_SIZE 20
@@ -14,6 +15,13 @@
 /////PLAYER PHYSICS SETTUNGS////////
 #define DEFAULT_SPEED 4
 /////////////////////////////////////
+
+typedef struct{
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    uint8_t a;
+}rgba;
 
 
 #endif

@@ -2,6 +2,7 @@
 #define _GAME_H_
 #include "config.h"
 #include "scene/scene.h"
+#include <stdbool.h>
 
 typedef struct SDLContext   SDLContext;
 typedef struct Player       Player;
@@ -16,11 +17,13 @@ typedef enum{
 
 typedef struct{
     GameStates state;
-    SceneType  scene_type;
 
-    int HEIGHT;
-    int WIDTH;
-    char title[TITLE_SIZE];
+    SceneType  scene_type;
+    bool       scene_changed;
+
+    int        HEIGHT;
+    int        WIDTH;
+    char       title[TITLE_SIZE];
 }GameConfig;
 
 void init_game(GameConfig * config,Player * player);

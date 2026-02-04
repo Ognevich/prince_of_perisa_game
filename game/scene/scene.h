@@ -15,5 +15,6 @@ typedef enum{
 }SceneType;
 
 void loadScene(GameScene * scene, SceneType type);
+void unloadScene(GameScene  *scene);
 
 #endif
