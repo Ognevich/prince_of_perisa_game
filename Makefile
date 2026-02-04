@@ -11,7 +11,8 @@ SRC = main.c \
       input/input.c \
       platform/sdl.c \
 	  game/static_objects/wall.c \
-	  game/scene/scene.c
+	  game/scene/scene.c \
+        game/collisions/collisions.c
 
 TARGET = main.exe   
 

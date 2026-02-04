@@ -39,7 +39,6 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
     Input_type input;
     Uint32 frameStart;
-    int frameTime;
 
     GameScene scene;
     bool scene_loaded = false;
@@ -57,14 +56,13 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
             }
 
             frameStart = SDL_GetTicks();
+
             poll_events(config);
             proccess_input(&input);
             update_player(player, &input);
             render(context,player, &scene);
 
-            frameTime = SDL_GetTicks() - frameStart;
-            if (FRAME_DELAY > frameTime)
-            SDL_Delay(FRAME_DELAY - frameTime);
+            limit_frame(frameStart,FRAME_DELAY);
 
             if (config->scene_changed)
             {

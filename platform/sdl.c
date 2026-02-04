@@ -25,3 +25,10 @@ void sdl_shutdown(SDLContext * context)
     SDL_Quit();
 
 }
+
+void limit_frame(Uint32 frameStart, int targetFrameTime)
+{
+    Uint32 frameTime = SDL_GetTicks() - frameStart;
+    if (frameTime < targetFrameTime)
+        SDL_Delay(targetFrameTime - frameTime);
+}
