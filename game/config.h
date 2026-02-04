@@ -14,6 +14,8 @@
 
 /////PLAYER PHYSICS SETTUNGS////////
 #define DEFAULT_SPEED 4
+#define GRAVITY 0.5f
+#define MAX_FALL_SPEED 12.0f
 /////////////////////////////////////
 
 typedef struct{
@@ -22,6 +24,12 @@ typedef struct{
     uint8_t b;
     uint8_t a;
 }rgba;
+
+typedef enum{
+    FlOOR_COLL,
+    WALL_COLL,
+    NONE_COLL
+}CollisionType;
 
 
 #endif

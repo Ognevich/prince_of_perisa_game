@@ -6,6 +6,7 @@
 #include "../graphics/renderer.h"
 #include "player/player.h"
 #include "../input/input.h"
+#include "collisions/collisions.h"
 
 void init_game(GameConfig * config,Player * player)
 {
@@ -29,7 +30,7 @@ void init_player(Player * player)
 {
     rgba color = {255,127,0,255};
     create_player(player, 950,
-                                   GAME_HEIGHT / 2.0f,
+                                   350,
                                    50, 45,              
                                    color, 0.0f, 0.0f);
 }
@@ -59,7 +60,8 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
             poll_events(config);
             proccess_input(&input);
-            update_player(player, &input);
+            CollisionType coll_type = checkCollision(player,&scene);
+            update_player(player, &input, coll_type);
             render(context,player, &scene);
 
             limit_frame(frameStart,FRAME_DELAY);
