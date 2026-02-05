@@ -15,6 +15,9 @@ struct Player{
     float dx, dy;
     
     bool on_ground;
+
+    float health;
+    float damage_timer;
 };
 
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);

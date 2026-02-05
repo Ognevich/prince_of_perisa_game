@@ -6,7 +6,8 @@ typedef enum{
     FLOOR_OBJ,
     SPIKE_OBJ,
     PLATFORM_OBJ,
-    INTERACT_OBJ
+    INTERACT_OBJ,
+    BACKGROUND_OBJ
 }StaticObjectType;
 
 

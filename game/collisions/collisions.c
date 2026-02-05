@@ -2,11 +2,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
+static inline bool is_spike(const StaticObject *object)
+{
+    return object->type == SPIKE_OBJ;
+}
+
 static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *object)
 {   
-    for (int i = 0; i < scene->wallsCount; i++)
+    for (int i = 0; i < scene->obj_count; i++)
     {
-        Wall *w = &scene->walls[i];
+        StaticObject *w = &scene->obj[i];
 
         bool horizontal_overlap = 
             p->x + p->width > w->x &&
@@ -21,6 +27,9 @@ static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *
 
         if (horizontal_overlap && on_top)
         {
+            if (is_spike(w))
+                object->is_spike = true;
+
             object->floor_wall = w;
             return true;
         }
@@ -30,9 +39,9 @@ static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *
 
 bool check_top_collision(Player *p, GameScene *scene, CollisionObject *object)
 {
-    for (int i = 0; i < scene->wallsCount; i++)
+    for (int i = 0; i < scene->obj_count; i++)
     {
-        Wall *w = &scene->walls[i];
+        StaticObject *w = &scene->obj[i];
 
         bool horizontal_overlap = 
             p->x + p->width > w->x &&
@@ -47,6 +56,8 @@ bool check_top_collision(Player *p, GameScene *scene, CollisionObject *object)
 
         if (horizontal_overlap && touch_top)
         {
+            if (is_spike(w))
+                object->is_spike = true;
             object->top_wall = w;
             return true;
         }
@@ -62,10 +73,10 @@ static bool check_left_wall_collision(Player *p, GameScene *scene, CollisionObje
     float y_bottom = p->y + p->height;
     float y_top = y_bottom - bottom_margin;
 
-    for (int i = 0; i < scene->wallsCount; i++)
+    for (int i = 0; i < scene->obj_count; i++)
     {
-        Wall *w = &scene->walls[i];
-        
+        StaticObject *w = &scene->obj[i];
+
         bool vertical_overlap =
             (y_bottom > w->y) &&
             (y_top < w->y + w->h);
@@ -86,6 +97,8 @@ static bool check_left_wall_collision(Player *p, GameScene *scene, CollisionObje
 
         if (vertical_overlap && touching_left)
         {
+            if (is_spike(w))
+                obj->is_spike = true;
             obj->left_wall = w;
             return true;
         }
@@ -101,10 +114,10 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
     float y_bottom = p->y + p->height;
     float y_top = y_bottom - bottom_margin;
 
-    for (int i = 0; i < scene->wallsCount; i++)
+    for (int i = 0; i < scene->obj_count; i++)
     {
-        Wall *w = &scene->walls[i];
-        
+        StaticObject *w = &scene->obj[i];
+
         bool vertical_overlap =
             (y_bottom > w->y) &&
             (y_top < w->y + w->h);
@@ -124,6 +137,8 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
 
         if (vertical_overlap && touching_right)
         {
+            if (is_spike(w))
+                obj->is_spike = true;
             obj->right_wall = w;
             return true;
         }
@@ -157,3 +172,4 @@ CollisionObject checkCollision(Player *p, GameScene *scene)
 
     return object;
 }
+

@@ -1,5 +1,6 @@
 #include "player.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include "../config.h"
 #include "stdbool.h"
 
@@ -12,9 +13,14 @@ void create_player(Player * player, float x, float y, float height, float width,
     player->height = height;
     player->dx = dx;
     player->dy = dy;
+    
     player->color = c;
+    
     player->v_speed = 0;
     player->on_ground = false;
+
+    player->health = MAX_HEALTH;
+    player->damage_timer = 0.0f;
 }
 
 void free_player(Player * player)
@@ -40,6 +46,10 @@ void update_player(Player * p, Input_type * type)
 
     p->v_speed += GRAVITY;
     p->y += p->v_speed;
+
+    if (p->damage_timer > 0)
+        p->damage_timer -= delta_time;
+
 }
 
 void resolve_player_collision(Player *p, CollisionObject coll_obj)
@@ -69,5 +79,13 @@ void resolve_player_collision(Player *p, CollisionObject coll_obj)
     {
         p->y = coll_obj.top_wall->y + coll_obj.top_wall->h + 0.1f;
         p->v_speed = 0; 
+
+    }
+
+    // ПЕРЕНЕСТИ ВІД КОЛІЗІЇ В ОКРЕМУ СИСТЕМУ
+    if (coll_obj.is_spike && p->damage_timer <= 0.0f)
+    {
+        p->health -= 20;
+        p->damage_timer = 0.5f; 
     }
 }

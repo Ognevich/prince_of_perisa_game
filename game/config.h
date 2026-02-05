@@ -17,6 +17,8 @@
 #define GRAVITY 0.5f
 #define MAX_FALL_SPEED 12.0f
 #define JUMP_SPEED 15.0f
+
+#define MAX_HEALTH 100.0f
 /////////////////////////////////////
 
 typedef struct{

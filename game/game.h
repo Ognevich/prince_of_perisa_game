@@ -6,7 +6,7 @@
 
 typedef struct SDLContext       SDLContext;
 typedef struct Player           Player;
-typedef struct Wall             Wall;
+typedef struct StaticObject     StaticObject;
 typedef struct Input_type       Input_type;
 
 typedef enum{

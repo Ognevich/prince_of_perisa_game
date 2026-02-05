@@ -1,6 +1,6 @@
 #include "renderer.h"
 #include "../game/player/player.h"
-#include "../game/static_objects/wall.h"
+#include "../game/static_objects/objects.h"
 #include "../game/scene/scene.h"
 #include <SDL3/SDL.h>
 
@@ -13,9 +13,9 @@ static void draw_player(SDLContext * context, Player * plr)
 
 static void draw_scene(SDLContext * context, GameScene * scene)
 {
-    for (int i = 0; i < scene->wallsCount; i++)
+    for (int i = 0; i < scene->obj_count; i++)
     {
-        Wall *wall = &scene->walls[i];
+        StaticObject *wall = &scene->obj[i];
         SDL_SetRenderDrawColor(context->renderer, wall->color.r,wall->color.g,wall->color.b,wall->color.a);
         SDL_FRect rect = {wall->x, wall->y, wall->w, wall->h};
         SDL_RenderFillRect(context->renderer, &rect);
