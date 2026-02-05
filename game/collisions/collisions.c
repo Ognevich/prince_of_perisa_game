@@ -1,11 +1,9 @@
 #include "collisions.h"
-#include "../static_objects/wall.h"
 #include <stdbool.h>
 #include <stdio.h>
 
-static bool check_floor_collision(Player *p , GameScene * scene)
+static bool check_floor_collision(Player *p , GameScene * scene, CollisionObject * object)
 {   
-    const float epsilon = 0.1f;
 
     for (int i = 0; i < scene->wallsCount; i++)
     {
@@ -15,23 +13,37 @@ static bool check_floor_collision(Player *p , GameScene * scene)
         p->x + p->width > w->x &&
         p->x < w->x + w->w;
 
-        bool on_top = p->y + p->height >= w->y && 
-            p->y + p->height <= w->y + epsilon;
-        
+        bool falling = p->v_speed>=0;
+
+
+        bool on_top =
+            falling &&
+            p->y + p->height >= w->y &&
+            p->y + p->height - p->v_speed <= w->y;
+
         if (horizontal_overlap && on_top)
-            return true;
+            {
+                object->wall = w;
+                return true;
+            }
     }
     return false;
 }
 
-CollisionType checkCollision(Player * p, GameScene * scene)
+CollisionObject checkCollision(Player * p, GameScene * scene)
 {
     
-    if (check_floor_collision(p,scene))
+    CollisionObject object = {0};
+
+    if (check_floor_collision(p,scene, &object))
         {
             printf("Wall collision worked\n");
-            return FlOOR_COLL;
+            object.type = FlOOR_COLL;
+            return object;
         }
 
-    return NONE_COLL;
+    object.wall = NULL;
+    object.type = NONE_COLL;
+
+    return object;
 }

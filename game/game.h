@@ -4,10 +4,10 @@
 #include "scene/scene.h"
 #include <stdbool.h>
 
-typedef struct SDLContext   SDLContext;
-typedef struct Player       Player;
-typedef struct Wall         Wall;
-typedef struct Input_type   Input_type;
+typedef struct SDLContext       SDLContext;
+typedef struct Player           Player;
+typedef struct Wall             Wall;
+typedef struct Input_type       Input_type;
 
 typedef enum{
     GAME_START,

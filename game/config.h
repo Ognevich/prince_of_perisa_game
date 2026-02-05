@@ -24,12 +24,4 @@ typedef struct{
     uint8_t b;
     uint8_t a;
 }rgba;
-
-typedef enum{
-    FlOOR_COLL,
-    WALL_COLL,
-    NONE_COLL
-}CollisionType;
-
-
 #endif

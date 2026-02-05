@@ -28,29 +28,34 @@ static void update_player_pos(Player * player, Input_type * type)
     if (type->right) player->x += DEFAULT_SPEED;
 }
 
-void update_player(Player * p, Input_type * type, CollisionType coll_type)
+void update_player(Player * p, Input_type * type)
 {
+    update_player_pos(p,type);
 
+    p->v_speed += GRAVITY;
+    p->y += p->v_speed;
+}
 
-    switch (coll_type)
+void resolve_player_collision(Player *p, CollisionObject coll_obj)
+{
+    switch (coll_obj.type)
     {
-    case NONE_COLL:
-    {
-        p->v_speed += GRAVITY;
-        break;
-    }
     case FlOOR_COLL:
     {
-        // p->y = col.wall->y - p->height;
-        p->v_speed = 0;
-        p->on_ground = true;
-        update_player_pos(p,type);
+        if (coll_obj.wall)
+        {
+            p->y = coll_obj.wall->y - p->height; 
+            p->v_speed = 0;
+            p->on_ground = true;
+        }
         break;
     }
+
+    case NONE_COLL:
     default:
+    {
+        p->on_ground = false;
         break;
     }
-
-    p->y += p->v_speed;
-
+    }
 }

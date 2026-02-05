@@ -5,6 +5,7 @@
 #include "../../platform/sdl.h"
 #include "../../input/input.h"
 #include "../config.h"
+#include "../collisions/collision_types.h"
 
 struct Player{
     float x,y;
@@ -19,7 +20,7 @@ struct Player{
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);
 void free_player(Player * player);
 
-void update_player(Player * player, Input_type * type, CollisionType coll_type);
-
+void update_player(Player * p, Input_type * type);
+void resolve_player_collision(Player *p, CollisionObject coll_obj);
 
 #endif

@@ -29,8 +29,8 @@ void init_game_config(GameConfig * config)
 void init_player(Player * player)
 {
     rgba color = {255,127,0,255};
-    create_player(player, 950,
-                                   350,
+    create_player(player, 820,
+                                   100,
                                    50, 45,              
                                    color, 0.0f, 0.0f);
 }
@@ -60,8 +60,9 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
             poll_events(config);
             proccess_input(&input);
-            CollisionType coll_type = checkCollision(player,&scene);
-            update_player(player, &input, coll_type);
+            update_player(player, &input);
+            CollisionObject coll_obj = checkCollision(player,&scene);
+            resolve_player_collision(player,coll_obj);
             render(context,player, &scene);
 
             limit_frame(frameStart,FRAME_DELAY);
