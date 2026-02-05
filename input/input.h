@@ -5,7 +5,9 @@
 
 struct Input_type{
     bool left;
-    bool right;    
+    bool right;
+    
+    bool jump;
 };
 
 void proccess_input(Input_type * type);

@@ -10,6 +10,7 @@ void proccess_input(Input_type * type)
 
     type->left  =  keys[SDL_SCANCODE_A];   
     type->right =  keys[SDL_SCANCODE_D];   
+    type->jump  =  keys[SDL_SCANCODE_SPACE];
 }
 
 void poll_events(GameConfig * cfg)

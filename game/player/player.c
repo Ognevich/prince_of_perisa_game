@@ -26,6 +26,12 @@ static void update_player_pos(Player * player, Input_type * type)
 {
     if (type->left) player->x -= DEFAULT_SPEED;
     if (type->right) player->x += DEFAULT_SPEED;
+
+    if (type->jump && player->on_ground)
+    {
+        player->v_speed = -JUMP_SPEED;
+        player->on_ground = false;
+    }
 }
 
 void update_player(Player * p, Input_type * type)
@@ -38,25 +44,30 @@ void update_player(Player * p, Input_type * type)
 
 void resolve_player_collision(Player *p, CollisionObject coll_obj)
 {
-
     if (coll_obj.is_floor && coll_obj.floor_wall)
     {
-        p->y = coll_obj.floor_wall->y - p->height; 
+        p->y = coll_obj.floor_wall->y - p->height;
         p->v_speed = 0;
         p->on_ground = true;
     }
-    else{
+    else {
         p->on_ground = false;
     }
 
-    if (coll_obj.is_left && coll_obj.left_wall)
+    if (coll_obj.is_left && coll_obj.left_wall && 
+        !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.left_wall))
     {
-        p->x = coll_obj.left_wall->x + coll_obj.left_wall->w; 
+        p->x = coll_obj.left_wall->x + coll_obj.left_wall->w;
     }
 
-    if (coll_obj.is_right && coll_obj.right_wall)
+    if (coll_obj.is_right && coll_obj.right_wall &&
+        !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.right_wall))
     {
         p->x = coll_obj.right_wall->x - p->width;
     }
-
+    if (coll_obj.is_top && coll_obj.top_wall)
+    {
+        p->y = coll_obj.top_wall->y + coll_obj.top_wall->h + 0.1f;
+        p->v_speed = 0; 
+    }
 }
