@@ -2,16 +2,14 @@
 #define _COLLISIONS_TYPES_H_
 #include "../static_objects/wall.h"
 
-typedef enum{
-    FlOOR_COLL,
-    WALL_COLL,
-    NONE_COLL
-}CollisionType;
+typedef struct {
+    bool is_floor;
+    bool is_left;
+    bool is_right;
 
-typedef struct{
-    Wall * wall;
-    CollisionType type;
-}CollisionObject;
-
+    Wall * floor_wall;
+    Wall * left_wall;
+    Wall * right_wall;
+} CollisionObject;
 
 #endif

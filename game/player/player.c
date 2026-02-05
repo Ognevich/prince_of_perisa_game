@@ -38,24 +38,25 @@ void update_player(Player * p, Input_type * type)
 
 void resolve_player_collision(Player *p, CollisionObject coll_obj)
 {
-    switch (coll_obj.type)
+
+    if (coll_obj.is_floor && coll_obj.floor_wall)
     {
-    case FlOOR_COLL:
-    {
-        if (coll_obj.wall)
-        {
-            p->y = coll_obj.wall->y - p->height; 
-            p->v_speed = 0;
-            p->on_ground = true;
-        }
-        break;
+        p->y = coll_obj.floor_wall->y - p->height; 
+        p->v_speed = 0;
+        p->on_ground = true;
+    }
+    else{
+        p->on_ground = false;
     }
 
-    case NONE_COLL:
-    default:
+    if (coll_obj.is_left && coll_obj.left_wall)
     {
-        p->on_ground = false;
-        break;
+        p->x = coll_obj.left_wall->x + coll_obj.left_wall->w; 
     }
+
+    if (coll_obj.is_right && coll_obj.right_wall)
+    {
+        p->x = coll_obj.right_wall->x - p->width;
     }
+
 }
