@@ -21,6 +21,8 @@ typedef struct{
     SceneType  scene_type;
     bool       scene_changed;
 
+    float      delta_time;
+
     int        HEIGHT;
     int        WIDTH;
     char       title[TITLE_SIZE];

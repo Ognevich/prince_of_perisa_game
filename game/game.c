@@ -23,6 +23,8 @@ void init_game_config(GameConfig * config)
     config->scene_type    = SCENE_LEVE1;
     config->scene_changed = false;
 
+    config->delta_time    = 0.0f;
+
     strcpy(config->title, "Prince of Persia");
 }
 
@@ -39,7 +41,7 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 {
 
     Input_type input;
-    Uint32 frameStart;
+    Uint32 frameStart = SDL_GetTicks();
 
     GameScene scene;
     bool scene_loaded = false;
@@ -56,11 +58,11 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
                 scene_loaded = true;
             }
 
-            frameStart = SDL_GetTicks();
+            config->delta_time = calculate_delta_time(&frameStart);
 
             poll_events(config);
             proccess_input(&input);
-            update_player(player, &input);
+            update_player(player, config, &input);
             CollisionObject coll_obj = checkCollision(player,&scene);
             resolve_player_collision(player,coll_obj);
             render(context,player, &scene);

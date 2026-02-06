@@ -11,4 +11,5 @@ struct SDLContext{
 int     sdl_init(SDLContext * context, GameConfig * cfg);
 void    sdl_shutdown(SDLContext * context);
 void    limit_frame(Uint32 frameStart, int targetFrameTime);
+float   calculate_delta_time(Uint32 * lastFrameTime);
 #endif

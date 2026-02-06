@@ -40,7 +40,7 @@ static void update_player_pos(Player * player, Input_type * type)
     }
 }
 
-void update_player(Player * p, Input_type * type)
+void update_player(Player * p, GameConfig * config , Input_type * type)
 {
     update_player_pos(p,type);
 
@@ -48,8 +48,7 @@ void update_player(Player * p, Input_type * type)
     p->y += p->v_speed;
 
     if (p->damage_timer > 0)
-        p->damage_timer -= delta_time;
-
+        p->damage_timer -= config->delta_time;
 }
 
 void resolve_player_collision(Player *p, CollisionObject coll_obj)
@@ -87,5 +86,6 @@ void resolve_player_collision(Player *p, CollisionObject coll_obj)
     {
         p->health -= 20;
         p->damage_timer = 0.5f; 
+        printf("damage_timer: %.3f, health: %f\n", p->damage_timer, p->health);
     }
 }

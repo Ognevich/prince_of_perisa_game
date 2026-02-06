@@ -32,3 +32,11 @@ void limit_frame(Uint32 frameStart, int targetFrameTime)
     if (frameTime < targetFrameTime)
         SDL_Delay(targetFrameTime - frameTime);
 }
+
+float calculate_delta_time(Uint32 * lastFrameTime)
+{
+    Uint32 currentFrameTime = SDL_GetTicks();     
+    Uint32 frameTime = currentFrameTime - *lastFrameTime;  
+    *lastFrameTime = currentFrameTime;            
+    return frameTime / 1000.0f;                   
+}

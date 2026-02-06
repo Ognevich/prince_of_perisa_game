@@ -23,7 +23,7 @@ struct Player{
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);
 void free_player(Player * player);
 
-void update_player(Player * p, Input_type * type);
+void update_player(Player * p, GameConfig * config , Input_type * type);
 void resolve_player_collision(Player *p, CollisionObject coll_obj);
 
 #endif
