@@ -62,11 +62,14 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
             poll_events(config);
             proccess_input(&input);
-            update_player(player, config, &input);
+
+            update_player_velocity(player,&input, config);
+
             CollisionObject coll_obj = checkCollision(player,&scene);
             resolve_player_collision(player,coll_obj);
-            render(context,player, &scene);
 
+
+            render(context,player, &scene);
             limit_frame(frameStart,FRAME_DELAY);
 
             if (config->scene_changed)

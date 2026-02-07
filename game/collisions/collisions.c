@@ -10,6 +10,10 @@ static inline bool is_spike(const StaticObject *object)
 
 static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *object)
 {   
+
+    StaticObject * closer_obj = NULL;
+    float closer_obj_y = 999999;
+
     for (int i = 0; i < scene->obj_count; i++)
     {
         StaticObject *w = &scene->obj[i];
@@ -27,12 +31,19 @@ static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *
 
         if (horizontal_overlap && on_top)
         {
-            if (is_spike(w))
-                object->is_spike = true;
-
-            object->floor_wall = w;
-            return true;
+            if (w->y < closer_obj_y)
+            {
+                closer_obj_y = w->y;
+                closer_obj = w;
+            }
         }
+    }
+    if (closer_obj)
+    {
+        if (is_spike(closer_obj))
+            object->is_spike = true;
+        object->floor_wall = closer_obj;
+        return true;
     }
     return false;
 }
@@ -73,6 +84,9 @@ static bool check_left_wall_collision(Player *p, GameScene *scene, CollisionObje
     float y_bottom = p->y + p->height;
     float y_top = y_bottom - bottom_margin;
 
+    StaticObject * closer_obj = NULL;
+    float closer_obj_x = -999999;
+
     for (int i = 0; i < scene->obj_count; i++)
     {
         StaticObject *w = &scene->obj[i];
@@ -97,12 +111,24 @@ static bool check_left_wall_collision(Player *p, GameScene *scene, CollisionObje
 
         if (vertical_overlap && touching_left)
         {
-            if (is_spike(w))
-                obj->is_spike = true;
-            obj->left_wall = w;
-            return true;
+            float right_edge = w->x + w->w;
+
+            if (right_edge > closer_obj_x)
+            {
+                closer_obj_x = right_edge;
+                closer_obj = w;
+            }
         }
     }
+
+    if (closer_obj)
+    {
+        if (is_spike(closer_obj))
+            obj->is_spike = true;
+        obj->left_wall = closer_obj;       
+        return true; 
+    }
+
     return false;
 }
 
@@ -113,6 +139,9 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
     
     float y_bottom = p->y + p->height;
     float y_top = y_bottom - bottom_margin;
+
+    StaticObject *closer_obj = NULL;
+    float closer_obj_x = 999999;
 
     for (int i = 0; i < scene->obj_count; i++)
     {
@@ -137,11 +166,18 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
 
         if (vertical_overlap && touching_right)
         {
-            if (is_spike(w))
-                obj->is_spike = true;
-            obj->right_wall = w;
-            return true;
+            if (w->x < closer_obj_x)
+            {
+                closer_obj_x = w->x;
+                closer_obj = w;
+            }
         }
+    }
+    if (closer_obj){
+        if (is_spike(closer_obj))
+            obj->is_spike = true;
+        obj->right_wall = closer_obj;
+        return true;
     }
     return false;
 }
@@ -155,6 +191,10 @@ CollisionObject checkCollision(Player *p, GameScene *scene)
         object.is_floor = true;
     }
     
+    if (check_top_collision(p,scene, &object))
+    {
+        object.is_top = true;
+    }
     if (check_left_wall_collision(p, scene, &object))
     {
         object.is_left = true;
@@ -163,11 +203,6 @@ CollisionObject checkCollision(Player *p, GameScene *scene)
     if (check_right_wall_collision(p, scene, &object))
     {
         object.is_right = true;
-    }
-
-    if (check_top_collision(p,scene, &object))
-    {
-        object.is_top = true;
     }
 
     return object;

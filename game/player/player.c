@@ -7,19 +7,21 @@
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy)
 {
 
-    player->x = x;
-    player->y = y;
-    player->width = width;
-    player->height = height;
-    player->dx = dx;
-    player->dy = dy;
+    player->x            = x;
+    player->y            = y;
+    player->width        = width;
+    player->height       = height;
+    player->dx           = dx;
+    player->dy           = dy;
     
-    player->color = c;
+    player->color        = c;
     
-    player->v_speed = 0;
-    player->on_ground = false;
+    player->v_speed      = 0.0f;
+    player->dx           = 0.0f;
 
-    player->health = MAX_HEALTH;
+    player->on_ground    = false;
+
+    player->health       = MAX_HEALTH;
     player->damage_timer = 0.0f;
 }
 
@@ -28,16 +30,34 @@ void free_player(Player * player)
     free(player);
 }
 
-static void update_player_pos(Player * player, Input_type * type)
+void update_player_velocity(Player * player, Input_type * type, GameConfig * config)
 {
-    if (type->left) player->x -= DEFAULT_SPEED;
-    if (type->right) player->x += DEFAULT_SPEED;
+    player->dx = 0;
+
+    if (type->left) player->dx -= DEFAULT_SPEED;
+    if (type->right) player->dx += DEFAULT_SPEED;
 
     if (type->jump && player->on_ground)
     {
         player->v_speed = -JUMP_SPEED;
         player->on_ground = false;
     }
+
+    player->v_speed += GRAVITY;
+
+    if (player->damage_timer > 0)
+        player->damage_timer -= config->delta_time;
+
+
+}
+void move_x(Player * p)
+{
+
+}
+
+void move_y(Player * p)
+{
+
 }
 
 void update_player(Player * p, GameConfig * config , Input_type * type)
@@ -63,6 +83,12 @@ void resolve_player_collision(Player *p, CollisionObject coll_obj)
         p->on_ground = false;
     }
 
+    if (coll_obj.is_top && coll_obj.top_wall)
+    {
+        p->y = coll_obj.top_wall->y + coll_obj.top_wall->h + 0.1f;
+        p->v_speed = 0; 
+
+    }
     if (coll_obj.is_left && coll_obj.left_wall && 
         !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.left_wall))
     {
@@ -73,12 +99,6 @@ void resolve_player_collision(Player *p, CollisionObject coll_obj)
         !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.right_wall))
     {
         p->x = coll_obj.right_wall->x - p->width;
-    }
-    if (coll_obj.is_top && coll_obj.top_wall)
-    {
-        p->y = coll_obj.top_wall->y + coll_obj.top_wall->h + 0.1f;
-        p->v_speed = 0; 
-
     }
 
     // ПЕРЕНЕСТИ ВІД КОЛІЗІЇ В ОКРЕМУ СИСТЕМУ

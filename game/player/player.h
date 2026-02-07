@@ -10,7 +10,7 @@
 struct Player{
     float x,y;
     float height,width;
-    float v_speed;
+    float v_speed, dx;
     rgba color;
     float dx, dy;
     
@@ -23,6 +23,9 @@ struct Player{
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy);
 void free_player(Player * player);
 
+void update_player_velocity(Player * player, Input_type * type, GameConfig * config);
+void move_x(Player * p);
+void move_y(Player * p);
 void update_player(Player * p, GameConfig * config , Input_type * type);
 void resolve_player_collision(Player *p, CollisionObject coll_obj);
 
