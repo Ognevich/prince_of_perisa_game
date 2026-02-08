@@ -13,6 +13,8 @@ void create_player(Player * player, float x, float y, float height, float width,
     player->height       = height;
     player->dx           = dx;
     player->dy           = dy;
+    player->knockback_x  = 0.0f;
+    player->knockback_y  = 0.0f;
     
     player->color        = c;
 
@@ -42,11 +44,19 @@ void update_player_velocity(Player * player, Input_type * type, GameConfig * con
 
     player->dy += GRAVITY;
 
+    float final_dx = player->dx + player->knockback_x;
+    float final_dy = player->dy + player->knockback_y;
+
+    player->dx = final_dx;
+    player->dy = final_dy;
+
+    player->knockback_x *= 0.85f;
+    player->knockback_y *= 0.85f;
+
     if (player->damage_timer > 0)
         player->damage_timer -= config->delta_time;
-
-
 }
+
 void move_x(Player * p)
 {
     p->x += p->dx;
@@ -77,13 +87,6 @@ void resolve_player_collisionY(Player * p,CollisionObject collY)
 
     }
 
-    // ПЕРЕНЕСТИ ВІД КОЛІЗІЇ В ОКРЕМУ СИСТЕМУ
-    if (collY.is_spike && p->damage_timer <= 0.0f)
-    {
-        p->health -= 20;
-        p->damage_timer = 0.5f; 
-        printf("damage_timer: %.3f, health: %f\n", p->damage_timer, p->health);
-    }
 }
 
 void resolve_player_collisionX(Player *p, CollisionObject collX)
@@ -97,4 +100,32 @@ void resolve_player_collisionX(Player *p, CollisionObject collX)
     {
         p->x = collX.right_wall->x - p->width;
     }
+}
+
+void apply_damage(Player * p, float damage)
+{
+    p->health -= damage;
+    printf("damage_timer: %.3f, health: %f\n", p->damage_timer, p->health);
+}
+
+void apply_knockback(Player *p, StaticObject * obj)
+{
+    float player_center_x = p->x + p->width / 2.0f;
+    float spike_center_x  = obj->x + obj->w / 2.0f;
+
+    float player_center_y = p->y + p->height / 2.0f;
+    float spike_center_y  = obj->y + obj->h / 2.0f;
+
+    float force_x = 5.0f;
+    float force_y = 3.0f;
+
+    if (player_center_x > spike_center_x)
+        p->knockback_x = force_x;
+    else
+        p->knockback_x = -force_x;
+
+    if (player_center_y > spike_center_y)
+        p->knockback_y = force_y;
+    else
+        p->knockback_y = -force_y;
 }

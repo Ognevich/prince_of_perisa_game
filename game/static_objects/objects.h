@@ -12,7 +12,6 @@ struct StaticObject{
     StaticObjectType type;
 };
 
-void createWall(struct StaticObject * wall, rgba color, int x, int y, int w, int h);
-void createSpike(struct StaticObject * spike, rgba color, int x, int y, int w, int h);
+void createObject(struct StaticObject * wall, StaticObjectType type,rgba color, int x, int y, int w, int h);
 
 #endif

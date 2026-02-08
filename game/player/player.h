@@ -12,7 +12,8 @@ struct Player{
     float height,width;
     rgba color;
     float dx, dy;
-    
+    float knockback_x, knockback_y;
+
     bool on_ground;
 
     float health;
@@ -25,6 +26,9 @@ void free_player(Player * player);
 void update_player_velocity(Player * player, Input_type * type, GameConfig * config);
 void move_x(Player * p);
 void move_y(Player * p);
+
+void apply_damage(Player * p, float damage);
+void apply_knockback(Player *p, StaticObject * obj);
 
 void resolve_player_collisionY(Player * player,CollisionObject collY);
 void resolve_player_collisionX(Player * player,CollisionObject collX);

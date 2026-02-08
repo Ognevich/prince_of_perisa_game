@@ -7,4 +7,5 @@
 
 CollisionObject check_y_collision(Player * player,GameScene * scene);
 CollisionObject check_x_collision(Player * player,GameScene * scene);
+StaticObject *  check_damage_coliision(Player * player, GameScene * scene);
 #endif

@@ -8,6 +8,8 @@
 #include "../input/input.h"
 #include "collisions/collisions.h"
 
+static void update_collisions(Player * player, GameScene * scene);
+
 void init_game(GameConfig * config,Player * player)
 {
     init_game_config(config);
@@ -58,17 +60,33 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
         update_player_velocity(player,&input, config);
 
-        move_y(player);
-        CollisionObject collY = check_y_collision(player,&scene);
-        resolve_player_collisionY(player,collY);
-
-        move_x(player);
-        CollisionObject collX = check_x_collision(player,&scene);
-        resolve_player_collisionX(player,collX);
+        update_collisions(player, &scene);
 
         render(context,player, &scene);
         limit_frame(frameStart,FRAME_DELAY);
     }
+}
+
+static void update_collisions(Player * player, GameScene * scene)
+{
+        move_y(player);
+        CollisionObject collY = check_y_collision(player,scene);
+        resolve_player_collisionY(player,collY);
+
+        move_x(player);
+        CollisionObject collX = check_x_collision(player,scene);
+        resolve_player_collisionX(player,collX);
+
+
+        StaticObject * obj = check_damage_coliision(player, scene);
+        
+        if (obj && player->damage_timer <= 0.0f)
+        {
+            apply_damage(player, 20.0);
+            apply_knockback(player, obj);
+            player->damage_timer = 0.5f;
+        }
+        
 }
 
 void game_shutdown()

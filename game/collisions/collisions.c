@@ -40,8 +40,6 @@ static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *
     }
     if (closer_obj)
     {
-        if (is_spike(closer_obj))
-            object->is_spike = true;
         object->floor_wall = closer_obj;
         return true;
     }
@@ -67,8 +65,6 @@ bool check_top_collision(Player *p, GameScene *scene, CollisionObject *object)
 
         if (horizontal_overlap && touch_top)
         {
-            if (is_spike(w))
-                object->is_spike = true;
             object->top_wall = w;
             return true;
         }
@@ -123,8 +119,6 @@ static bool check_left_wall_collision(Player *p, GameScene *scene, CollisionObje
 
     if (closer_obj)
     {
-        if (is_spike(closer_obj))
-            obj->is_spike = true;
         obj->left_wall = closer_obj;       
         return true; 
     }
@@ -174,8 +168,6 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
         }
     }
     if (closer_obj){
-        if (is_spike(closer_obj))
-            obj->is_spike = true;
         obj->right_wall = closer_obj;
         return true;
     }
@@ -210,4 +202,32 @@ CollisionObject check_x_collision(Player * player,GameScene * scene)
     }
 
     return object;
+}
+
+StaticObject * check_damage_coliision(Player * p, GameScene * scene)
+{
+    for (int i = 0; i < scene->obj_count; i++)
+    {
+        StaticObject * w = &scene->obj[i];
+
+        if (w->type != SPIKE_OBJ)
+        {
+            continue;
+        }
+
+        int padding = 2;
+
+        bool overlap =
+            p->x < (w->x + w->w + padding) &&
+            p->x + p->width > (w->x - padding) &&
+            p->y < (w->y + w->h + padding) &&
+            p->y + p->height > (w->y - padding);
+
+        if (overlap)
+            {
+                return w;
+            }
+    }
+    return NULL;
+
 }

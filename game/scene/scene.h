@@ -8,6 +8,8 @@
 typedef struct{
     struct StaticObject * obj;
     size_t obj_count;
+
+    
 }GameScene;
 
 typedef enum{
