@@ -48,42 +48,26 @@ void update_game(GameConfig * config, SDLContext * context, Player * player)
 
     while (config->state != GAME_STOP)
     {
-        switch (config->scene_type)
-        {
-        case SCENE_LEVE1:
-        {
-            if (!scene_loaded)
-            {
-                loadScene(&scene, config->scene_type);
-                scene_loaded = true;
-            }
 
-            config->delta_time = calculate_delta_time(&frameStart);
+        control_scene(&scene,config->scene_type,&scene_loaded,&config->scene_changed);
 
-            poll_events(config);
-            proccess_input(&input);
+        config->delta_time = calculate_delta_time(&frameStart);
 
-            update_player_velocity(player,&input, config);
+        poll_events(config);
+        proccess_input(&input);
 
-            CollisionObject coll_obj = checkCollision(player,&scene);
-            resolve_player_collision(player,coll_obj);
+        update_player_velocity(player,&input, config);
 
+        move_y(player);
+        CollisionObject collY = check_y_collision(player,&scene);
+        resolve_player_collisionY(player,collY);
 
-            render(context,player, &scene);
-            limit_frame(frameStart,FRAME_DELAY);
+        move_x(player);
+        CollisionObject collX = check_x_collision(player,&scene);
+        resolve_player_collisionX(player,collX);
 
-            if (config->scene_changed)
-            {
-                unloadScene(&scene);
-                config->scene_changed = false;
-                scene_loaded = false;
-            }
-
-            break;
-        }
-        default:
-            break;
-        }
+        render(context,player, &scene);
+        limit_frame(frameStart,FRAME_DELAY);
     }
 }
 

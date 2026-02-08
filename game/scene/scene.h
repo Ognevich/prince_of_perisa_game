@@ -2,6 +2,7 @@
 #define _SCENE_H_
 #include <stddef.h>
 #include "../static_objects/objects.h"
+#include <stdbool.h>
 
 
 typedef struct{
@@ -16,5 +17,6 @@ typedef enum{
 
 void loadScene(GameScene * scene, SceneType type);
 void unloadScene(GameScene  *scene);
+void control_scene(GameScene * scene, SceneType type, bool * scene_loaded, bool * scene_changed);
 
 #endif

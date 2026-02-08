@@ -22,12 +22,12 @@ static bool check_floor_collision(Player *p, GameScene *scene, CollisionObject *
             p->x + p->width > w->x &&
             p->x < w->x + w->w;
 
-        bool falling = p->v_speed >= 0;
+        bool falling = p->dy >= 0;
 
         bool on_top =
             falling &&
             p->y + p->height >= w->y &&
-            p->y + p->height - p->v_speed <= w->y;
+            p->y + p->height - p->dy <= w->y;
 
         if (horizontal_overlap && on_top)
         {
@@ -58,11 +58,11 @@ bool check_top_collision(Player *p, GameScene *scene, CollisionObject *object)
             p->x + p->width > w->x &&
             p->x < w->x + w->w;
 
-        bool moving_up = p->v_speed < 0;
+        bool moving_up = p->dy < 0;
 
         bool touch_top = 
             moving_up &&
-            (p->y + p->v_speed) <= (w->y + w->h) &&  
+            (p->y + p->dy) <= (w->y + w->h) &&  
             p->y >= w->y + w->h;                      
 
         if (horizontal_overlap && touch_top)
@@ -182,29 +182,32 @@ static bool check_right_wall_collision(Player *p, GameScene *scene, CollisionObj
     return false;
 }
 
-CollisionObject checkCollision(Player *p, GameScene *scene)
+CollisionObject check_y_collision(Player * player,GameScene * scene)
+{
+    CollisionObject obj = {0};
+
+    if (check_floor_collision(player,scene,&obj))
+        obj.is_floor = true;
+
+    if (check_top_collision(player,scene,&obj))
+        obj.is_top = true;
+
+    return obj;
+}
+
+CollisionObject check_x_collision(Player * player,GameScene * scene)
 {
     CollisionObject object = {0};
 
-    if (check_floor_collision(p, scene, &object))
-    {
-        object.is_floor = true;
-    }
-    
-    if (check_top_collision(p,scene, &object))
-    {
-        object.is_top = true;
-    }
-    if (check_left_wall_collision(p, scene, &object))
+    if (check_left_wall_collision(player, scene, &object))
     {
         object.is_left = true;
     }
     
-    if (check_right_wall_collision(p, scene, &object))
+    if (check_right_wall_collision(player, scene, &object))
     {
         object.is_right = true;
     }
 
     return object;
 }
-

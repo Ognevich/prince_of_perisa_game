@@ -15,9 +15,6 @@ void create_player(Player * player, float x, float y, float height, float width,
     player->dy           = dy;
     
     player->color        = c;
-    
-    player->v_speed      = 0.0f;
-    player->dx           = 0.0f;
 
     player->on_ground    = false;
 
@@ -39,11 +36,11 @@ void update_player_velocity(Player * player, Input_type * type, GameConfig * con
 
     if (type->jump && player->on_ground)
     {
-        player->v_speed = -JUMP_SPEED;
+        player->dy = -JUMP_SPEED;
         player->on_ground = false;
     }
 
-    player->v_speed += GRAVITY;
+    player->dy += GRAVITY;
 
     if (player->damage_timer > 0)
         player->damage_timer -= config->delta_time;
@@ -52,60 +49,52 @@ void update_player_velocity(Player * player, Input_type * type, GameConfig * con
 }
 void move_x(Player * p)
 {
-
+    p->x += p->dx;
 }
 
 void move_y(Player * p)
 {
-
+    p->dy += GRAVITY;
+    p->y += p->dy;
 }
 
-void update_player(Player * p, GameConfig * config , Input_type * type)
+void resolve_player_collisionY(Player * p,CollisionObject collY)
 {
-    update_player_pos(p,type);
-
-    p->v_speed += GRAVITY;
-    p->y += p->v_speed;
-
-    if (p->damage_timer > 0)
-        p->damage_timer -= config->delta_time;
-}
-
-void resolve_player_collision(Player *p, CollisionObject coll_obj)
-{
-    if (coll_obj.is_floor && coll_obj.floor_wall)
+    if (collY.is_floor && collY.floor_wall)
     {
-        p->y = coll_obj.floor_wall->y - p->height;
-        p->v_speed = 0;
+        p->y = collY.floor_wall->y - p->height;
+        p->dy = 0;
         p->on_ground = true;
     }
     else {
         p->on_ground = false;
     }
 
-    if (coll_obj.is_top && coll_obj.top_wall)
+    if (collY.is_top && collY.top_wall)
     {
-        p->y = coll_obj.top_wall->y + coll_obj.top_wall->h + 0.1f;
-        p->v_speed = 0; 
+        p->y = collY.top_wall->y + collY.top_wall->h + 0.1f;
+        p->dy = 0; 
 
-    }
-    if (coll_obj.is_left && coll_obj.left_wall && 
-        !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.left_wall))
-    {
-        p->x = coll_obj.left_wall->x + coll_obj.left_wall->w;
-    }
-
-    if (coll_obj.is_right && coll_obj.right_wall &&
-        !(coll_obj.is_floor && coll_obj.floor_wall == coll_obj.right_wall))
-    {
-        p->x = coll_obj.right_wall->x - p->width;
     }
 
     // ПЕРЕНЕСТИ ВІД КОЛІЗІЇ В ОКРЕМУ СИСТЕМУ
-    if (coll_obj.is_spike && p->damage_timer <= 0.0f)
+    if (collY.is_spike && p->damage_timer <= 0.0f)
     {
         p->health -= 20;
         p->damage_timer = 0.5f; 
         printf("damage_timer: %.3f, health: %f\n", p->damage_timer, p->health);
+    }
+}
+
+void resolve_player_collisionX(Player *p, CollisionObject collX)
+{
+    if (collX.is_left && collX.left_wall)
+    {
+        p->x = collX.left_wall->x + collX.left_wall->w;
+    }
+
+    if (collX.is_right && collX.right_wall)
+    {
+        p->x = collX.right_wall->x - p->width;
     }
 }

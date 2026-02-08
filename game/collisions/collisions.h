@@ -5,6 +5,6 @@
 #include "collision_types.h"
 #include "../static_objects/objects.h"
 
-CollisionObject checkCollision(Player * p, GameScene * scene);
-
+CollisionObject check_y_collision(Player * player,GameScene * scene);
+CollisionObject check_x_collision(Player * player,GameScene * scene);
 #endif

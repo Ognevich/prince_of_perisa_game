@@ -58,3 +58,29 @@ void unloadScene(GameScene  *scene)
     scene->obj = NULL;
     scene->obj_count = 0;
 }
+
+void control_scene(GameScene * scene, SceneType type, bool * scene_loaded, bool * scene_changed)
+{
+        switch (type)
+        {
+        case SCENE_LEVE1:
+        {
+            if (!*scene_loaded)
+            {
+                loadScene(scene, type);
+                *scene_loaded = true;
+            }
+
+          if (*scene_changed)
+            {
+                unloadScene(scene);
+                *scene_changed = false;
+                *scene_loaded = false;
+            }
+
+            break;
+        }
+        default:
+            break;
+        }    
+}
