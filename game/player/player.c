@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "../config.h"
 #include "stdbool.h"
+#include <math.h>
 
 void create_player(Player * player, float x, float y, float height, float width, rgba c, float dx, float dy)
 {
@@ -44,11 +45,8 @@ void update_player_velocity(Player * player, Input_type * type, GameConfig * con
 
     player->dy += GRAVITY;
 
-    float final_dx = player->dx + player->knockback_x;
-    float final_dy = player->dy + player->knockback_y;
-
-    player->dx = final_dx;
-    player->dy = final_dy;
+    player->dx += player->knockback_x;
+    player->dy += player->knockback_y;
 
     player->knockback_x *= 0.85f;
     player->knockback_y *= 0.85f;
@@ -113,19 +111,12 @@ void apply_knockback(Player *p, StaticObject * obj)
     float player_center_x = p->x + p->width / 2.0f;
     float spike_center_x  = obj->x + obj->w / 2.0f;
 
-    float player_center_y = p->y + p->height / 2.0f;
-    float spike_center_y  = obj->y + obj->h / 2.0f;
+    float dx = player_center_x - spike_center_x;
 
-    float force_x = 5.0f;
-    float force_y = 3.0f;
+    float force_x = 12.0f;
+    float force_y = 2.0f;
 
-    if (player_center_x > spike_center_x)
-        p->knockback_x = force_x;
-    else
-        p->knockback_x = -force_x;
+    p->knockback_x = (dx > 0) ? force_x : -force_x;
 
-    if (player_center_y > spike_center_y)
-        p->knockback_y = force_y;
-    else
-        p->knockback_y = -force_y;
+    p->knockback_y = -force_y;
 }

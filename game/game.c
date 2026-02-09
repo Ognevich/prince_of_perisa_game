@@ -35,7 +35,7 @@ void init_player(Player * player)
     rgba color = {255,127,0,255};
     create_player(player, 820,
                                    100,
-                                   32, 32,              
+                                   48, 48,              
                                    color, 0.0f, 0.0f);
 }
 
